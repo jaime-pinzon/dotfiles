@@ -1,2 +1,3 @@
 # Aliases. Loaded from .bashrc
 alias config='/usr/bin/git --git-dir=/home/jaime/.cfg/ --work-tree=/home/jaime'
+alias vim='nvim'
