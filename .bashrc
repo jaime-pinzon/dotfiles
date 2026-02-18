@@ -17,4 +17,5 @@ export ERL_AFLAGS="-kernel shell_history enabled" # Enable IEx Shell History
 
 set -o ignoreeof # DO NOT EXIT ON CTRL+D
 
-eval "$(starship init bash)" # Bash prompt
+eval "$(starship init bash)" # Starship prompt
+eval "$(mise activate bash)" # Mise-en-place
