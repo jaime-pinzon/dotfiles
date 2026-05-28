@@ -8,21 +8,20 @@ under `~` for part of this repo. See Nicola Paolucci's writeup:
 
 ## What's tracked
 
-- `.alias` — defines the `config` alias used to manage these dotfiles, and `vim → nvim`.
-- `.bashrc` — interactive shell setup (Starship, Mise, PATH).
-- `.bash_profile` — sources `.bashrc` on login shells (matters on macOS).
+- `.alias` — defines the `config` alias used to manage these dotfiles, and `vim → nvim`. Shell-agnostic.
+- `.zshrc` — interactive shell setup (Starship, Mise, completions, PATH).
 - `.gitconfig` — global Git config: SSH commit signing, sane pull/push/rebase defaults, aliases.
 - `.git-hooks/pre-push` — blocks pushes that contain unsigned commits.
 - `.config/nvim/` — LazyVim starter with a few extras (Elixir, Erlang, JSON, Markdown, yanky, claudecode).
 
 ## Prerequisites
 
-Install these before checking out the repo. Any package manager will do — examples below.
+Install these before checking out the repo.
 
 | Tool | Why |
 |---|---|
 | `git` (≥ 2.34) | needs SSH commit signing support |
-| `bash` (≥ 4 recommended) | the config targets bash, not zsh |
+| `zsh` (≥ 5.8) | the shell the config targets — default on macOS Catalina+ |
 | `starship` | prompt |
 | `mise` | language runtime manager |
 | `neovim` (≥ 0.10) | `vim` alias points here, and LazyVim needs it |
@@ -33,30 +32,30 @@ No SSH agent is required — `~/.ssh/config` defines `IdentityFile` per host.
 
 ### macOS
 
+Zsh is already the default shell on macOS Catalina+. Install the rest via Homebrew:
+
 ```bash
-brew install git bash starship mise neovim ripgrep fd lazygit
+brew install git starship mise neovim ripgrep fd lazygit
 brew install --cask font-jetbrains-mono-nerd-font
 ```
 
-Optional: make modern bash the login shell (macOS ships with bash 3.2 by default;
-the configs work on 3.2 but 5+ is preferable):
-
-```bash
-echo /opt/homebrew/bin/bash | sudo tee -a /etc/shells
-chsh -s /opt/homebrew/bin/bash
-```
-
-(On Intel Macs use `/usr/local/bin/bash`.)
-
 ### Linux
 
-- **openSUSE / Fedora / Debian / Ubuntu / Arch**: install `git`, `bash`, `neovim`,
-  `ripgrep`, `fd` (sometimes packaged as `fd-find`), and `lazygit` via your
-  package manager.
+Install `git`, `zsh`, `neovim`, `ripgrep`, `fd` (sometimes packaged as `fd-find`),
+and `lazygit` via your distro's package manager (zypper / apt / dnf / pacman).
+
+Then:
+
 - **`mise`**: `curl https://mise.run | sh`
 - **`starship`**: `curl -sS https://starship.rs/install.sh | sh`
 - **Nerd Font**: download from <https://www.nerdfonts.com/font-downloads> and
   drop into `~/.local/share/fonts`, then `fc-cache -f`.
+
+Make zsh the login shell:
+
+```bash
+chsh -s "$(command -v zsh)"
+```
 
 ### WSL (Windows)
 
@@ -84,16 +83,16 @@ config checkout 2>&1 | grep -E "^\s+\." | awk '{print $1}' | while read f; do
 done
 config checkout
 
-# 5) start a new login shell — .bash_profile sources .bashrc, which loads .alias
-exec bash -l
+# 5) start a new login zsh — loads .zshrc, which sources .alias
+exec zsh -l
 ```
 
 Verify:
 
 ```bash
-config status              # should be clean
-which config               # alias loaded from .alias
-git config --get user.signingkey   # should resolve to ~/.ssh/id_ed25519_personal.pub
+config status                       # should be clean
+which config                        # alias loaded from .alias
+git config --get user.signingkey    # should resolve to ~/.ssh/id_ed25519_personal.pub
 ```
 
 ## Post-install — manual steps not in the repo
@@ -133,7 +132,7 @@ A few things are intentionally not tracked (secrets, per-machine setup):
 
 ```bash
 config status                  # what changed
-config add ~/.bashrc           # track a change
+config add ~/.zshrc            # track a change
 config commit -S -m "..."      # commit (signed)
 config push                    # push to origin/main
 
