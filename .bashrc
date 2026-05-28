@@ -12,10 +12,16 @@
 
 test -s ~/.alias && . ~/.alias || true # Load them aliases
 
-export SSH_AUTH_SOCK=~/.1password/agent.sock      # Enable 1Password SSH Agent
 export ERL_AFLAGS="-kernel shell_history enabled" # Enable IEx Shell History
+export PATH="$HOME/.claudepod:$PATH"              # Podman based Claude Code sandboxing
 
 set -o ignoreeof # DO NOT EXIT ON CTRL+D
 
 eval "$(starship init bash)" # Starship prompt
 eval "$(mise activate bash)" # Mise-en-place
+
+export PATH=/home/jaime/.local/bin:$PATH
+
+[[ -e "/home/jaime/.local/lib/oracle-cli/lib/python3.12/site-packages/oci_cli/bin/oci_autocomplete.sh" ]] && source "/home/jaime/.local/lib/oracle-cli/lib/python3.12/site-packages/oci_cli/bin/oci_autocomplete.sh"
+alias oci='PYTHONWARNINGS="ignore::FutureWarning" oci'
+export PATH="$HOME/.npm-global/bin:$PATH"
