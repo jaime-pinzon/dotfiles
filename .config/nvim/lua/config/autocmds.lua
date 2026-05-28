@@ -6,3 +6,14 @@
 --
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "elixir",
+  callback = function()
+    vim.keymap.set("n", "<leader>cr", function()
+      vim.cmd("w")
+      local file = vim.fn.expand("%")
+      Snacks.terminal("elixir " .. file, { auto_close = false })
+    end, { buffer = true, desc = "Run Elixir file" })
+  end,
+})
