@@ -1,7 +1,7 @@
 [user]
     name = Jaime Pinzon
     email = jaimepinzon@pm.me
-	  signingkey = /home/jaime/.ssh/id_ed25519_personal.pub
+	  signingkey = ~/.ssh/id_ed25519_personal.pub
 
 [core]
     hooksPath = ~/.git-hooks
@@ -62,5 +62,5 @@
 [gpg "ssh"]
 	allowedSignersFile = ~/.ssh/allowed_signers
 
-[includeIf "gitdir:/home/jaime/Projects/wonderful/"]
-    path = /home/jaime/Projects/wonderful/.gitconfig
+[includeIf "gitdir:~/Projects/wonderful/"]
+    path = ~/Projects/wonderful/.gitconfig
